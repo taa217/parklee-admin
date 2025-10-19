@@ -161,7 +161,8 @@ export const ParkingSpacesDashboard: React.FC = () => {
 
         if (filters.status !== 'all') {
             result = result.filter(spot =>
-                filters.status === 'occupied' ? spot.status === 'occupied' : spot.status === 'empty'
+                // Treat 'reserved' as unavailable/occupied in admin view
+                filters.status === 'occupied' ? spot.status !== 'empty' : spot.status === 'empty'
             );
         }
 
@@ -556,14 +557,14 @@ export const ParkingSpacesDashboard: React.FC = () => {
                             <div
                                 key={spot.id}
                                 className={`p-3 rounded-lg border cursor-pointer transition-all
-                  ${spot.status === 'occupied' ? 'bg-red-50 border-red-200' : 'bg-green-50 border-green-200'}
+                  ${spot.status === 'empty' ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}
                   ${selectedSpot?.id === spot.id ? 'ring-2 ring-blue-500' : ''}
                 `}
                                 onClick={() => setSelectedSpot(spot)}
                             >
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <span className={`inline-block w-3 h-3 rounded-full mr-2 ${spot.status === 'occupied' ? 'bg-red-500' : 'bg-green-500'
+                                        <span className={`inline-block w-3 h-3 rounded-full mr-2 ${spot.status === 'empty' ? 'bg-green-500' : 'bg-red-500'
                                             }`}></span>
                                         <span className="font-medium">Spot {spot.spot_number}</span>
                                     </div>
@@ -574,7 +575,7 @@ export const ParkingSpacesDashboard: React.FC = () => {
                                 </div>
                                 <div className="mt-2 text-sm text-gray-600">
                                     <div>Lot: {spot.lot_name}</div>
-                                    <div>Status: {spot.status === 'occupied' ? 'Occupied' : 'Available'}</div>
+                                    <div>Status: {spot.status === 'empty' ? 'Available' : spot.status === 'reserved' ? 'Reserved' : 'Occupied'}</div>
                                     <div>Zone:  {zones.map(zone => (
                                         <option key={zone.id} value={zone.id}>{zone.name}</option>
                                     ))}</div>
@@ -625,9 +626,9 @@ export const ParkingSpacesDashboard: React.FC = () => {
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-gray-600">Status:</span>
-                                    <span className={`px-2 py-1 rounded text-xs font-medium ${selectedSpot.status === 'occupied' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+                                    <span className={`px-2 py-1 rounded text-xs font-medium ${selectedSpot.status === 'empty' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                                         }`}>
-                                        {selectedSpot.status === 'occupied' ? 'Occupied' : 'Available'}
+                                        {selectedSpot.status === 'empty' ? 'Available' : selectedSpot.status === 'reserved' ? 'Reserved' : 'Occupied'}
                                     </span>
                                 </div>
                                 <div className="flex justify-between">
