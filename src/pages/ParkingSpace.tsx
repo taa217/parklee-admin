@@ -68,7 +68,6 @@ export const ParkingSpacesDashboard: React.FC = () => {
     const [zones, setZones] = useState<any[]>([]);
     const [newSpot, setNewSpot] = useState({
         spot_number: '',
-        lot_name: '',
         is_vip: false,
         parking_zone_id: ''
     });
@@ -324,7 +323,6 @@ export const ParkingSpacesDashboard: React.FC = () => {
                 },
                 body: JSON.stringify({
                     spot_number: newSpot.spot_number,
-                    lot_name: newSpot.lot_name,
                     is_vip: newSpot.is_vip,
                     parking_zone_id: newSpot.parking_zone_id
                 })
@@ -335,7 +333,6 @@ export const ParkingSpacesDashboard: React.FC = () => {
                 setShowCreateModal(false);
                 setNewSpot({
                     spot_number: '',
-                    lot_name: '',
                     is_vip: false,
                     parking_zone_id: ''
                 });
@@ -678,16 +675,7 @@ export const ParkingSpacesDashboard: React.FC = () => {
                         />
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Lot Name</label>
-                        <input
-                            type="text"
-                            className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            value={newSpot.lot_name}
-                            onChange={(e) => setNewSpot({ ...newSpot, lot_name: e.target.value })}
-                            required
-                        />
-                    </div>
+                    
 
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Parking Zone</label>
@@ -746,7 +734,7 @@ export const ParkingSpacesDashboard: React.FC = () => {
                             onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
                         />
                         <p className="mt-1 text-sm text-gray-500">
-                            CSV should contain columns: spot_number, lot_name, is_vip, parking_zone_id
+                            CSV should contain columns: spot_number, is_vip, parking_zone_id (lot_name optional)
                         </p>
                     </div>
 
